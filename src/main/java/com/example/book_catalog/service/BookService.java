@@ -14,32 +14,32 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    // ✅ Get all books
+    //Get all books
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
-    // ✅ Get book by ID
+    // Get book by ID
     public Book getBookById(Long id) {
         return bookRepository.findById(id).orElse(null);
     }
 
-    // ✅ Add book
+    // Add book
     public void addBook(Book book) {
         bookRepository.save(book);
     }
 
-    // ✅ Update book
+    //Update book
     public void updateBook(Book book) {
         bookRepository.save(book);
     }
 
-    // ✅ Delete book
+    //Delete book
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
     }
 
-    // ✅ **New: Search books by title or author**
+    // **New: Search books by title or author**
     public List<Book> searchBooks(String keyword) {
         return bookRepository.findByTitleContainingOrAuthorContaining(keyword, keyword);
     }

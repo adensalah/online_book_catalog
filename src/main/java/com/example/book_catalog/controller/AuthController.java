@@ -22,12 +22,16 @@ public class AuthController {
     // Show the registration page
     @GetMapping("/register")
     public String showRegisterPage() {
-        return "register"; // Ensure register.html exists in templates
+        return "register";
     }
 
     // Handle user registration (POST request)
     @PostMapping("/register")
-    public String registerUser(@RequestParam String username, @RequestParam String password, Model model) {
+    public String registerUser(
+            @RequestParam String username,
+            @RequestParam String email,
+            @RequestParam String password,
+            Model model) {
         // Check if username already exists
         if (userRepository.findByUsername(username).isPresent()) {
             model.addAttribute("error", "Username already exists!");
@@ -37,6 +41,7 @@ public class AuthController {
         // Save user with encrypted password
         User user = new User();
         user.setUsername(username); // Fixed: setUsername instead of setUserName
+        user.setEmail(email); // Fixed: setUsername instead of setUserName
         user.setPassword(passwordEncoder.encode(password)); // Hash the password
         user.setRole("USER"); // Default role
 
