@@ -52,7 +52,7 @@ public class SecurityConfig {
                 if (role.contains("ROLE_ADMIN")) {
                     response.sendRedirect("/admin"); // Redirect admin to /admin dashboard
                 } else {
-                    response.sendRedirect("/books"); // Redirect normal users to books page
+                    response.sendRedirect("/user/books"); // Redirect normal users to books page
                 }
             }
         };

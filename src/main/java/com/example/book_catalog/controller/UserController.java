@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("user/books")
+@RequestMapping("/user/books")
 public class UserController {
 
     private final BookService bookService;
