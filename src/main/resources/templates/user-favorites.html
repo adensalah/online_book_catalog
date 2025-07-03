@@ -2,37 +2,72 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Your Favorite Books</title>
+  <title>My Favorites</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    .favorite-card {
+        transition: all 0.3s ease;
+    }
+    .favorite-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .empty-favorites {
+        min-height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+  </style>
 </head>
-<body class="container mt-4">
+<body>
+<div class="container mt-4">
+  <h1 class="mb-4">⭐ My Favorite Books</h1>
 
-<h1 class="text-center">⭐ Your Favorite Books</h1>
+  <div th:if="${not #lists.isEmpty(favoriteBooks)}">
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead class="table-dark">
+        <tr>
+          <th>Cover</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>ISBN</th>
+          <th>Year</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="favorite : ${favoriteBooks}">
+          <td>
+            <img th:src="@{${favorite?.book?.imageUrl != null} ? ${favorite.book.imageUrl} : '/images/cover.jpg'}"
+                 alt="Book cover" style="width: 50px; height: auto;">
+          </td>
+          <td th:text="${favorite?.book?.title ?: 'No title available'}"></td>
+          <td th:text="${favorite?.book?.author ?: 'Author unknown'}"></td>
+          <td th:text="${favorite?.book?.isbn ?: 'N/A'}"></td>
+          <td th:text="${favorite?.book?.publishedYear ?: 'Unknown'}"></td>
+          <td>
+            <a th:href="@{/book-details/view/{id}(id=${favorite?.book?.id})}"
+               class="btn btn-sm btn-outline-primary me-1">View</a>
+            <a th:href="@{/favorites/remove/{id}(id=${favorite.id})}"
+               class="btn btn-sm btn-outline-danger">Remove</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-<div class="text-end mb-3">
-  <a href="/user/books" class="btn btn-secondary">⬅ Back to Books</a>
+  <div th:if="${#lists.isEmpty(favoriteBooks)}" class="empty-favorites text-center py-5">
+    <div class="empty-icon mb-3" style="font-size: 4rem;">📚</div>
+    <h3>No Favorite Books Yet</h3>
+    <p class="text-muted">You haven't added any books to your favorites.</p>
+    <a href="/books" class="btn btn-primary mt-3">Browse Books</a>
+  </div>
 </div>
 
-<table class="table table-striped table-hover shadow">
-  <thead class="table-dark">
-  <tr>
-    <th>Title</th>
-    <th>Author</th>
-    <th>ISBN</th>
-    <th>Year</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="favorite : ${favoriteBooks}">
-    <td th:text="${favorite.book.title}"></td>
-    <td th:text="${favorite.book.author}"></td>
-    <td th:text="${favorite.book.isbn}"></td>
-    <td th:text="${favorite.book.publishedYear}"></td>
-  </tr>
-  </tbody>
-</table>
-
-<!-- Bootstrap Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
